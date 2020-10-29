@@ -52,8 +52,9 @@ try {
 	state = conn.createStatement();
 	ResultSet rs = null;
 	
-	String sql = "SELECT A.BOARD_ID, A.TITLE, A.ID, A.NAME, A.DATE_TIME ";
+	String sql = "SELECT A.BOARD_ID, A.TITLE, B.NAME, A.ID, A.DATE_TIME ";
 	sql += "FROM WEB_BOARD AS A ";
+	sql += "LEFT JOIN WEB_USER AS B ON A.ID = B.ID ";
 	sql += "ORDER BY A.ID DESC;";
 	pstmt = conn.prepareStatement(sql);
 	rs = pstmt.executeQuery();
@@ -64,8 +65,8 @@ try {
 		while(rs.next()) {		
 			String boardId = rs.getNString("A.BOARD_ID");
 			String title = rs.getNString("A.TITLE");
-			String userId = rs.getNString("A.ID");
-		    String name = rs.getNString("A.NAME");
+		    String name = rs.getNString("B.NAME");
+		    String userId = rs.getNString("A.ID");
 			String dateTime = rs.getNString("A.DATE_TIME");
 %>
 						<tr>

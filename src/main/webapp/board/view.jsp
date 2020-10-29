@@ -40,22 +40,15 @@ try {
 	state = conn.createStatement();
 	ResultSet rs = null;
 	
-	String sql = "SELECT A.BOARD_ID, A.TITLE, A.ID, A.DATE_TIME, A.CONTENT, A.NAME ";
+	String sql = "SELECT A.BOARD_ID, A.TITLE, A.ID, A.DATE_TIME, A.CONTENT, B.NAME ";
 	sql += "FROM WEB_BOARD AS A ";
+	sql += "LEFT JOIN WEB_USER AS B ON A.ID = B.ID ";
     sql += "WHERE A.BOARD_ID=? LIMIT 1 ;";
 
 
 	pstmt = conn.prepareStatement(sql);
 	pstmt.setNString(1, boardId);
 	rs = pstmt.executeQuery();
-
-	ResultSet rs_c = null;
-
-    	String sql_c = "SELECT C.ID, C.CONTENT, C.DATE_TIME, C.USER_ID FROM WEB_COMMENT AS C;";
-
-    pstmt = conn.prepareStatement(sql);
-    pstmt.setNString(1, boardId);
-    rs_c = pstmt.executeQuery();
 	
 	// WEB_BOARD 정보 있음
 	if (rs != null) {	
@@ -63,16 +56,32 @@ try {
 			title = rs.getNString("A.TITLE");
 			userId = rs.getNString("A.ID");
 			dateTime = rs.getNString("A.DATE_TIME");
-			name = rs.getNString("A.NAME");
+			name = rs.getNString("B.NAME");
 			content = rs.getNString("A.CONTENT");
 
-			com_id = rs_c.getNString("C.ID");
-			com_content = rs_c.getNString("C.CONTENT");
-			com_dateTime = rs_c.getNString("C.DATE_TIME");
-			com_userId = rs_c.getNString("C.USER_ID");
+
 		}
 	}
-	
+
+	ResultSet rs_c = null;
+
+    String sql_c = "SELECT C.ID, C.CONTENT, C.DATE_TIME, C.USER_ID FROM WEB_COMMENT AS C;";
+
+    pstmt = conn.prepareStatement(sql);
+    pstmt.setNString(1, boardId);
+    rs_c = pstmt.executeQuery();
+
+	// WEB_COMMENT 정보 있음
+	if (rs_c != null) {
+	    while(rs.next()) {
+	        com_id = rs_c.getNString("C.ID");
+            com_content = rs_c.getNString("C.CONTENT");
+            com_dateTime = rs_c.getNString("C.DATE_TIME");
+            com_userId = rs_c.getNString("C.USER_ID");
+	    }
+	}
+
+	rs_c.close();
 	rs.close();
 	state.close();
 	conn.close();

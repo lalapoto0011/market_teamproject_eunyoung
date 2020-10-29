@@ -1,5 +1,7 @@
 package auth;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -68,7 +70,14 @@ public class Login extends HttpServlet {
                 while(rs.next()) {
                     String passwordInDB = rs.getNString("PASSWORD");
 
-                    // 비밀번호 일치
+                    //비밀번호 일치
+                    if (BCrypt.checkpw(password, passwordInDB)) {
+                        passwordCorrect = true;
+                    } else {
+                        System.out.println("비밀번호 불일치");
+                    }
+
+              /*      // 비밀번호 일치
                     if (password.equals(passwordInDB)) {
                         passwordCorrect = true;
                     }
@@ -76,7 +85,7 @@ public class Login extends HttpServlet {
                     // 비밀번호 틀림
                     else {
                         System.out.println("비밀번호 틀림");
-                    }
+                    }*/
                 }
             }
 

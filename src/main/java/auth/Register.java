@@ -1,5 +1,7 @@
 package auth;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -48,6 +50,9 @@ public class Register extends HttpServlet {
         String email = request.getParameter("email");
         String phone = request.getParameter("phone");
 
+        // 비밀번호 암호화
+        String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12)); //12번 돌리기로 함. 권장되는 게 12번이라서
+
         // SQL 변수
         Connection conn = null;
         Statement state = null;
@@ -66,7 +71,8 @@ public class Register extends HttpServlet {
             try {
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, id);
-                pstmt.setString(2, password);
+                //pstmt.setString(2, password);
+                pstmt.setString(2, hashed); //암호화 한 비밀번호(?)
                 pstmt.setString(3, name);
                 pstmt.setString(4, email);
                 pstmt.setString(5, phone);
