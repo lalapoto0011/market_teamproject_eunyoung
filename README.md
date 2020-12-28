@@ -31,3 +31,10 @@ login.jsp, register.jsp, Login.java(서블릿)
 Login.java, Register.java (서블릿)
 
 회원가입하여 암호화된 비밀번호가 DB에 저장되는 것 확인하였음.
+
+
+
+
+12/28
+
+<마이페이지> - 
