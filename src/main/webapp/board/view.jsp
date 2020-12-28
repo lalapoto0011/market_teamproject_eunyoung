@@ -65,7 +65,7 @@ try {
 
 	ResultSet rs_c = null;
 
-    String sql_c = "SELECT C.ID, C.CONTENT, C.DATE_TIME, C.USER_ID FROM WEB_COMMENT AS C;";
+    String sql_c = "SELECT C.ID, C.CONTENT, C.DATE_TIME FROM WEB_COMMENT AS C;";
 
     pstmt = conn.prepareStatement(sql);
     pstmt.setNString(1, boardId);
@@ -77,7 +77,6 @@ try {
 	        com_id = rs_c.getNString("C.ID");
             com_content = rs_c.getNString("C.CONTENT");
             com_dateTime = rs_c.getNString("C.DATE_TIME");
-            com_userId = rs_c.getNString("C.USER_ID");
 	    }
 	}
 
@@ -115,24 +114,26 @@ try {
 		</div>
 		
 		<!-- 댓글 -->
+		<form id="commentForm" method="post" action="<c:url value='/' />board/view">
 		<div class="card" style="margin-top:20px;">
 			<div class="card-body">
 				<div>
-					<form>
-						<textarea class="form-control" rows="3" name="com_content"></textarea>
-					</form>
+					<textarea class="form-control" rows="3" name="com_content"></textarea>
 				</div>
 			</div>
 			<div class="card-footer">
 				<button type="button" class="btn btn-success" id="btnAdd">등록</button>
 			</div>
 		</div>
+		</form>
 
 		<!-- 댓글 보여주기 -->
 		<div class="card" style="margin-top:20px;">
         		<div class="card-body">
-                	<p class="card-title"><%=com_userId %> <%=com_dateTime %></p>
-                	<p class="card-text"><%=com_content %></p>
+        		    <div>
+                	    <p class="card-title"><%=com_userId %> <%=com_dateTime %></p>
+                	    <p class="card-text"><%=com_content %></p>
+                	</div>
                 </div>
                 <div class="card-footer">
                     <div class="float-right">
@@ -200,11 +201,14 @@ try {
 	$('#btnAdd').on('click', function() {
 		if (!$('textarea[name="com_content"]').val()) {
 			alert('내용을 입력해주세요');
-			$('textarea[name="content"]').focus();
+			$('textarea[name="com_content"]').focus();
 			return false;
 		}
 
-		$('form[name=addForm]').submit();
+
+
+		$('#commentForm').submit();
+
 	});
 </script>
 
@@ -213,4 +217,3 @@ try {
 		$('#deleteForm').submit();
 	});
 </script>
-
