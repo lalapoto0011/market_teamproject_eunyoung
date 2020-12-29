@@ -64,7 +64,7 @@ public class Login extends HttpServlet {
             ResultSet rs = pstmt.executeQuery();
 
             // 아이디 맞음
-            if (rs != null) {ffffffff
+            if (rs != null) {
                 idCorrect = true;
 
                 while(rs.next()) {
